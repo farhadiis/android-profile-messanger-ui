@@ -6,39 +6,48 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import com.example.soroushprofile.avatar.ProfileAvatar;
+import com.example.soroushprofile.models.User;
+import com.example.soroushprofile.util.ColorUtil;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private final static String TAG = ProfileActivity.class.getSimpleName();
+
+    private User user;
+
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private ImageView mHeaderImageView;
+    private ImageView mAvatarImageView;
+    private TextView mUsernameTextView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        initializeWindow();
         initializeRes();
         initializeToolbar();
+
+        this.user = new User("Farhad Azad", R.drawable.p01);
+
+        initializeProfileAvatar();
+        initializeUserDate();
     }
 
-    private void initializeWindow() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    private void initializeRes() {
-        findViewById(R.id.fab_video_call).setOnClickListener(this);
-        findViewById(R.id.fab_voice_call).setOnClickListener(this);
-    }
-
-    private void initializeToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    private void initializeUserDate() {
+        mUsernameTextView.setText(user.getName());
     }
 
     @Override
@@ -46,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -75,4 +83,46 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+    private void initializeRes() {
+        mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        mHeaderImageView = findViewById(R.id.header_image_view);
+        mAvatarImageView = findViewById(R.id.avatar_image_view);
+        mUsernameTextView = findViewById(R.id.username);
+
+
+        findViewById(R.id.fab_video_call).setOnClickListener(this);
+        findViewById(R.id.fab_voice_call).setOnClickListener(this);
+    }
+
+    private void initializeToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    private void initializeProfileAvatar() {
+        ProfileAvatar.of(this, user, mAvatarImageView, mHeaderImageView, palette -> {
+            int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+            int colorPrimaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+            if (palette != null) {
+                int vibrantColor = palette.getDominantColor(colorPrimary);
+                mCollapsingToolbarLayout.setContentScrimColor(vibrantColor);
+                int darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f);
+                mCollapsingToolbarLayout.setStatusBarScrimColor(darkVibrantColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
+                }
+            } else {
+                mCollapsingToolbarLayout.setContentScrimColor(colorPrimary);
+                mCollapsingToolbarLayout.setStatusBarScrimColor(colorPrimaryDark);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(colorPrimaryDark);
+                }
+            }
+        });
+    }
+
 }
