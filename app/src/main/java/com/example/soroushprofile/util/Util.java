@@ -28,10 +28,6 @@ public class Util {
         return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    public static float convertSpToPixels(float sp, Context context) {
-        return sp * context.getResources().getDisplayMetrics().scaledDensity;
-    }
-
     public static float getTextWidth(Paint paint, String text) {
         return paint.measureText(text);
     }

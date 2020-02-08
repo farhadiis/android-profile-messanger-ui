@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:allowDividerBelow="false"
+        app:iconSpaceReserved="false"
+        app:summary="Username"
+        app:title="\@farhad_azad" />
+
+    <Preference
+        app:allowDividerBelow="false"
+        app:iconSpaceReserved="false"
+        app:summary="Bio"
+        app:title="27 y.o. designer from tehran, iran..." />
+
+    <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Media">
+        <com.example.soroushprofile.prefrences.widgets.UserMediaPreference />
+    </PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Preference">
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="notifications"
+            app:title="Notifications" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="feedback"
+            app:title="Clear Conversation" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="feedback"
+            app:title="Block" />
+
+    </PreferenceCategory>
+
+
+    <!--    <androidx.preference.PreferenceCategory-->
+    <!--        android:key="user_category"-->
+    <!--        app:iconSpaceReserved="false">-->
+
+    <!--    </androidx.preference.PreferenceCategory>-->
+
+
+</PreferenceScreen>

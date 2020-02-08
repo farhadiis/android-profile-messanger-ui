@@ -1,4 +1,4 @@
-package com.example.soroushprofile.util;
+package com.example.soroushprofile.components.layouts;
 
 import com.google.android.material.appbar.AppBarLayout;
 

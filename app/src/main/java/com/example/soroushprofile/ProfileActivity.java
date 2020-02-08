@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
 
 import com.example.soroushprofile.avatar.ProfileAvatar;
 import com.example.soroushprofile.models.User;
@@ -32,7 +33,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView mUsernameTextView;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +40,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         initializeRes();
         initializeToolbar();
 
-        this.user = new User("Farhad Azad", R.drawable.p01);
+        this.user = new User("Farhad Azad", R.drawable.p02);
 
         initializeProfileAvatar();
         initializeUserDate();
-    }
-
-    private void initializeUserDate() {
-        mUsernameTextView.setText(user.getName());
     }
 
     @Override
@@ -85,10 +81,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initializeRes() {
-        mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        mHeaderImageView = findViewById(R.id.header_image_view);
-        mAvatarImageView = findViewById(R.id.avatar_image_view);
-        mUsernameTextView = findViewById(R.id.username);
+        mCollapsingToolbarLayout    = findViewById(R.id.toolbar_layout);
+        mHeaderImageView            = findViewById(R.id.header_image_view);
+        mAvatarImageView            = findViewById(R.id.avatar_image_view);
+        mUsernameTextView           = findViewById(R.id.username);
 
 
         findViewById(R.id.fab_video_call).setOnClickListener(this);
@@ -104,25 +100,32 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initializeProfileAvatar() {
-        ProfileAvatar.of(this, user, mAvatarImageView, mHeaderImageView, palette -> {
-            int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-            int colorPrimaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
-            if (palette != null) {
-                int vibrantColor = palette.getDominantColor(colorPrimary);
-                mCollapsingToolbarLayout.setContentScrimColor(vibrantColor);
-                int darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f);
-                mCollapsingToolbarLayout.setStatusBarScrimColor(darkVibrantColor);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-                }
-            } else {
-                mCollapsingToolbarLayout.setContentScrimColor(colorPrimary);
-                mCollapsingToolbarLayout.setStatusBarScrimColor(colorPrimaryDark);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(colorPrimaryDark);
-                }
-            }
-        });
+        ProfileAvatar.of(this, user, mAvatarImageView, mHeaderImageView, this::initializeColorPalette);
     }
+
+    private void initializeUserDate() {
+        mUsernameTextView.setText(user.getName());
+    }
+
+    private void initializeColorPalette(Palette palette) {
+        int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+        int colorPrimaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        if (palette != null) {
+            int vibrantColor = palette.getMutedColor(colorPrimary);
+            mCollapsingToolbarLayout.setContentScrimColor(vibrantColor);
+            int darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f);
+            mCollapsingToolbarLayout.setStatusBarScrimColor(darkVibrantColor);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }
+        } else {
+            mCollapsingToolbarLayout.setContentScrimColor(colorPrimary);
+            mCollapsingToolbarLayout.setStatusBarScrimColor(colorPrimaryDark);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(colorPrimaryDark);
+            }
+        }
+    }
+
 
 }

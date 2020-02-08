@@ -32,12 +32,12 @@ public class TextProfileAvatar extends ProfileAvatar {
             int colorPrimaryDark = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
             Resources resources = getActivity().getResources();
             int size = (int) resources.getDimension(R.dimen.avatar_size);
-            Bitmap bitmap = textAsBitmap(text, colorPrimaryDark, size);
+            Bitmap bitmap = generateTextThumbnail(text, colorPrimaryDark, size);
             imageView.setImageBitmap(bitmap);
         }
     }
 
-    private Bitmap textAsBitmap(String text, int color, int size) {
+    private Bitmap generateTextThumbnail(String text, int color, int size) {
         Paint paint = new Paint(ANTI_ALIAS_FLAG);
         paint.setTextSize(size);
         paint.setColor(Color.WHITE);

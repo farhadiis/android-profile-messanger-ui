@@ -1,4 +1,4 @@
-package com.example.soroushprofile.views;
+package com.example.soroushprofile.components.layouts;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.soroushprofile.R;
-import com.example.soroushprofile.util.AppBarStateChangeListener;
 import com.example.soroushprofile.util.Util;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -84,7 +83,7 @@ public class ParallaxLayout extends CoordinatorLayout {
 
     private void translationView(float offset) {
 
-        float newAvatarSize = Util.convertDpToPixel(EXPAND_AVATAR_SIZE_DP - (EXPAND_AVATAR_SIZE_DP - COLLAPSED_AVATAR_SIZE_DP) * offset, getContext());
+        int newAvatarSize = (int) Util.convertDpToPixel(EXPAND_AVATAR_SIZE_DP - (EXPAND_AVATAR_SIZE_DP - COLLAPSED_AVATAR_SIZE_DP) * offset, getContext());
 
         float expandAvatarSize = Util.convertDpToPixel(EXPAND_AVATAR_SIZE_DP, getContext());
         float xAvatarOffset = (mPinPoint[0] - mAvatarPoint[0]) * offset;
@@ -92,8 +91,8 @@ public class ParallaxLayout extends CoordinatorLayout {
 
         mAvatarImageView.setTranslationX(xAvatarOffset);
         mAvatarImageView.setTranslationY(yAvatarOffset);
-        mAvatarImageView.getLayoutParams().width = Math.round(newAvatarSize);
-        mAvatarImageView.getLayoutParams().height = Math.round(newAvatarSize);
+        mAvatarImageView.getLayoutParams().width = newAvatarSize;
+        mAvatarImageView.getLayoutParams().height = newAvatarSize;
         mAvatarImageView.requestLayout();
 
         float xTitleOffset = (mPinPoint[0] - mUsernameTextViewPoint[0] + 150) * offset;
