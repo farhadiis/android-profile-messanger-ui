@@ -7,7 +7,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.soroushprofile.models.ConversationType;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +20,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeRes() {
-        findViewById(R.id.preview).setOnClickListener(
-                v -> startActivity(new Intent(MainActivity.this, ProfileActivity.class)));
+        findViewById(R.id.individual_preview).setOnClickListener(this);
+        findViewById(R.id.group_preview).setOnClickListener(this);
+        findViewById(R.id.channel_preview).setOnClickListener(this);
     }
 
     private void initializeWindow() {
@@ -28,4 +31,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        ConversationType type;
+        switch (v.getId()) {
+            case R.id.individual_preview:
+                type = ConversationType.individual;
+                break;
+            case R.id.group_preview:
+                type = ConversationType.group;
+                break;
+            case R.id.channel_preview:
+                type = ConversationType.channel;
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.CONVERSATION_TYPE, type.name());
+        startActivity(intent);
+    }
 }

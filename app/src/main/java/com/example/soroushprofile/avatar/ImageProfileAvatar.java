@@ -6,19 +6,19 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
-import com.example.soroushprofile.models.User;
+import com.example.soroushprofile.models.ConversationThread;
 
 public class ImageProfileAvatar extends ProfileAvatar {
 
-    ImageProfileAvatar(@NonNull Activity activity, @NonNull User user,
+    ImageProfileAvatar(@NonNull Activity activity, @NonNull ConversationThread thread,
                        @NonNull ImageView mHeaderImageView,
                        @NonNull AvatarPaletteDelegate delegate) {
-        super(activity, user, mHeaderImageView, delegate);
+        super(activity, thread, mHeaderImageView, delegate);
     }
 
     @Override
     public void drawAvatar(ImageView imageView) {
-        Glide.with(getActivity()).load(getUser().getAvatar()).into(imageView);
+        Glide.with(getActivity()).load(getThread().getAvatar()).into(imageView);
     }
 
 }

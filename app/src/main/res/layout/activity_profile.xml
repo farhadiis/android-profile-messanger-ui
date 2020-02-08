@@ -79,7 +79,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:text="Username"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toTopOf="@+id/status"
@@ -87,20 +86,21 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/avatar_image_view"
                     app:layout_constraintTop_toTopOf="@+id/avatar_image_view"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="Username" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Online"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/avatar_image_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/username"
-                    app:layout_constraintTop_toBottomOf="@+id/username" />
+                    app:layout_constraintTop_toBottomOf="@+id/username"
+                    tools:text="Online" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -108,31 +108,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/settings_preference"
         android:name="com.example.soroushprofile.prefrences.SettingsPreference"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_video_call"
+    <LinearLayout
+        android:id="@+id/fab_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:src="@drawable/ic_video_call_white_24dp"
-        app:fabSize="mini"
+        android:orientation="horizontal"
+        android:padding="16dp"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_voice_call"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="78dp"
-        android:layout_marginRight="76dp"
-        android:src="@drawable/ic_call_white_24dp"
-        app:fabSize="mini"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior=".components.layouts.behavior.ScrollAwareFabBehavior" />
 
 </com.example.soroushprofile.components.layouts.ParallaxLayout>

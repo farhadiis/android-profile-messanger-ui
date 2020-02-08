@@ -44,7 +44,7 @@ public class UserMediaPreference extends Preference {
 
 
     private void initialize() {
-        setLayoutResource(R.layout.user_media_preference_view);
+        setLayoutResource(R.layout.preference_user_media_widget);
     }
 
     @Override
@@ -62,7 +62,8 @@ public class UserMediaPreference extends Preference {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        refresh(user);
+        if (user != null)
+            refresh(user);
     }
 
     public void refresh(User user) {

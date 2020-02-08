@@ -12,23 +12,24 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.soroushprofile.R;
-import com.example.soroushprofile.models.User;
+import com.example.soroushprofile.models.ConversationThread;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 public class TextProfileAvatar extends ProfileAvatar {
 
 
-    TextProfileAvatar(@NonNull Activity activity, @NonNull User user,
+    TextProfileAvatar(@NonNull Activity activity, @NonNull ConversationThread thread,
                       @NonNull ImageView mHeaderImageView,
                       @NonNull AvatarPaletteDelegate delegate) {
-        super(activity, user, mHeaderImageView, delegate);
+        super(activity, thread, mHeaderImageView, delegate);
     }
 
     @Override
     public void drawAvatar(ImageView imageView) {
-        if (!getUser().getName().isEmpty()) {
-            String text = getUser().getName().substring(0, 1);
+        String title = getThread().getTitle();
+        if (!title.isEmpty()) {
+            String text = title.substring(0, 1);
             int colorPrimaryDark = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
             Resources resources = getActivity().getResources();
             int size = (int) resources.getDimension(R.dimen.avatar_size);

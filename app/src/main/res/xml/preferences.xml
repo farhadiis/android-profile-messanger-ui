@@ -12,7 +12,8 @@
         app:allowDividerBelow="false"
         app:iconSpaceReserved="false"
         app:summary="Bio"
-        app:title="27 y.o. designer from tehran, iran..." />
+        app:title="27 y.o. designer from tehran, iran..., The Biotechnology Innovation Organization
+         is the largest trade organization in the world that represents the biotechnology industry." />
 
     <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
 
@@ -41,19 +42,11 @@
             app:key="feedback"
             app:title="Clear Conversation" />
 
-        <Preference
+        <com.example.soroushprofile.prefrences.widgets.SoroushPreference
             app:iconSpaceReserved="false"
-            app:key="feedback"
+            app:key="block_preference"
             app:title="Block" />
 
     </PreferenceCategory>
-
-
-    <!--    <androidx.preference.PreferenceCategory-->
-    <!--        android:key="user_category"-->
-    <!--        app:iconSpaceReserved="false">-->
-
-    <!--    </androidx.preference.PreferenceCategory>-->
-
 
 </PreferenceScreen>

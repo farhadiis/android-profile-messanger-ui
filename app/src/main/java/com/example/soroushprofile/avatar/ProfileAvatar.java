@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.soroushprofile.R;
-import com.example.soroushprofile.models.User;
+import com.example.soroushprofile.models.ConversationThread;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -27,7 +27,7 @@ public abstract class ProfileAvatar implements RequestListener<Bitmap> {
     private Activity activity;
 
     @NonNull
-    private User user;
+    private ConversationThread thread;
 
     @NonNull
     private ImageView mHeaderImageView;
@@ -35,25 +35,25 @@ public abstract class ProfileAvatar implements RequestListener<Bitmap> {
     @NonNull
     private AvatarPaletteDelegate delegate;
 
-    ProfileAvatar(@NonNull Activity activity, @NonNull User user,
+    ProfileAvatar(@NonNull Activity activity, @NonNull ConversationThread thread,
                          @NonNull ImageView mHeaderImageView,
                          @NonNull AvatarPaletteDelegate delegate) {
         this.activity = activity;
-        this.user = user;
+        this.thread = thread;
         this.mHeaderImageView = mHeaderImageView;
         this.delegate = delegate;
     }
 
 
-    public static void of(@NonNull Activity activity, @NonNull User user,
+    public static void of(@NonNull Activity activity, @NonNull ConversationThread thread,
                           @NonNull ImageView mAvatarImageView, @NonNull ImageView mHeaderImageView,
                           @NonNull AvatarPaletteDelegate delegate) {
 
         ProfileAvatar profileAvatar;
-        if (user.getAvatar() != null)
-            profileAvatar = new ImageProfileAvatar(activity, user, mHeaderImageView, delegate);
+        if (thread.getAvatar() != null)
+            profileAvatar = new ImageProfileAvatar(activity, thread, mHeaderImageView, delegate);
         else
-            profileAvatar = new TextProfileAvatar(activity, user, mHeaderImageView, delegate);
+            profileAvatar = new TextProfileAvatar(activity, thread, mHeaderImageView, delegate);
 
         profileAvatar.drawHeader();
         profileAvatar.drawAvatar(mAvatarImageView);
@@ -62,10 +62,10 @@ public abstract class ProfileAvatar implements RequestListener<Bitmap> {
     public abstract void drawAvatar(ImageView imageView);
 
     private void drawHeader() {
-        if (user.getAvatar() != null) {
+        if (thread.getAvatar() != null) {
             Glide.with(activity)
                     .asBitmap()
-                    .load(user.getAvatar())
+                    .load(thread.getAvatar())
                     .apply(RequestOptions.bitmapTransform(new BlurTransformation(10, 3)))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.color.colorPrimary)
@@ -102,8 +102,7 @@ public abstract class ProfileAvatar implements RequestListener<Bitmap> {
 
 
     @NonNull
-    User getUser() {
-        return user;
+    public ConversationThread getThread() {
+        return thread;
     }
-
 }

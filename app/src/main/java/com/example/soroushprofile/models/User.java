@@ -9,9 +9,9 @@ public class User {
 
     private static User INSTANCE;
 
-    public static User getInstance() {
+    public static User getInstance(boolean hasContent) {
         if (INSTANCE == null)
-            INSTANCE = new User("Farhad Azad", R.drawable.p02, true);
+            INSTANCE = new User("Farhad Azad", R.drawable.p02, hasContent);
         return INSTANCE;
     }
 
