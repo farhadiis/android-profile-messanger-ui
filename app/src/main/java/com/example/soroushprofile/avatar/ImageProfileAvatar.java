@@ -18,7 +18,6 @@ public class ImageProfileAvatar extends ProfileAvatar {
 
     @Override
     public void drawAvatar(ImageView imageView) {
-
         Glide.with(getActivity()).load(getUser().getAvatar()).into(imageView);
     }
 

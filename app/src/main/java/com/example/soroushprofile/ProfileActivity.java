@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         initializeRes();
         initializeToolbar();
 
-        this.user = new User("Farhad Azad", R.drawable.p02);
+        this.user = User.getInstance();
 
         initializeProfileAvatar();
         initializeUserDate();

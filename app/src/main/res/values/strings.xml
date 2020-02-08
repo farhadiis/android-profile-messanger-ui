@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Soroush Profile</string>
     <string name="action_more">More</string>
+
+    <string name="profile_user_media_category_title">Media</string>
+    <string name="profile_user_media_no_media_individual">No shared media with %s.</string>
+    <string name="profile_user_media_no_media_group">No shared media in this group.</string>
+    <string name="profile_user_media_no_media_channel">No shared media with in this channel.</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

@@ -18,8 +18,11 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="Media">
-        <com.example.soroushprofile.prefrences.widgets.UserMediaPreference />
+        app:key="user_media_preference_category">
+
+        <com.example.soroushprofile.prefrences.widgets.UserMediaPreference
+            app:key="user_media_preference"
+            app:selectable="false" />
     </PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
