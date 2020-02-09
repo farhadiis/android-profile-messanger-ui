@@ -7,12 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.palette.graphics.Palette;
@@ -39,8 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mAvatarImageView;
     private TextView mUsernameTextView;
     private TextView mStatusTextView;
-    private LinearLayout mFabContainer;
-
+    private CoordinatorLayout mRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         mAvatarImageView = findViewById(R.id.avatar_image_view);
         mUsernameTextView = findViewById(R.id.username);
         mStatusTextView = findViewById(R.id.status);
-        mFabContainer = findViewById(R.id.fab_container);
+        mRoot = findViewById(R.id.root);
     }
 
     private void initializeToolbar() {
@@ -141,13 +140,14 @@ public class ProfileActivity extends AppCompatActivity {
                 conversation.getSubscriber(), conversation.getSubscriber());
         mStatusTextView.setText(subscribers);
 
-        FloatingActionButton fabVoiceCall = (FloatingActionButton) getLayoutInflater()
+        FloatingActionButton fabShare = (FloatingActionButton) getLayoutInflater()
                 .inflate(R.layout.profile_fab_item, null);
-        fabVoiceCall.setOnClickListener(new FabClickListener(FabClickListener.SHARE_CHANNEL));
-        fabVoiceCall.setImageResource(R.drawable.ic_share_white_24dp);
+        fabShare.setOnClickListener(new FabClickListener(FabClickListener.SHARE_CHANNEL));
+        fabShare.setImageResource(R.drawable.ic_share_white_24dp);
 
-        LinearLayout.LayoutParams params = ViewUtil.getParams(this, 6);
-        mFabContainer.addView(fabVoiceCall, params);
+        mRoot.addView(fabShare,
+                ViewUtil.getCoordinatorLayoutParams(this, R.id.app_bar, 16));
+
 
     }
 
@@ -156,13 +156,13 @@ public class ProfileActivity extends AppCompatActivity {
                 conversation.getMember(), conversation.getMember());
         mStatusTextView.setText(members);
 
-        FloatingActionButton fabVoiceCall = (FloatingActionButton) getLayoutInflater()
+        FloatingActionButton fabAdd = (FloatingActionButton) getLayoutInflater()
                 .inflate(R.layout.profile_fab_item, null);
-        fabVoiceCall.setOnClickListener(new FabClickListener(FabClickListener.ADD_TO_GROUP));
-        fabVoiceCall.setImageResource(R.drawable.ic_group_add_white_24dp);
+        fabAdd.setOnClickListener(new FabClickListener(FabClickListener.ADD_TO_GROUP));
+        fabAdd.setImageResource(R.drawable.ic_group_add_white_24dp);
 
-        LinearLayout.LayoutParams params = ViewUtil.getParams(this, 6);
-        mFabContainer.addView(fabVoiceCall, params);
+        mRoot.addView(fabAdd,
+                ViewUtil.getCoordinatorLayoutParams(this, R.id.app_bar, 16));
     }
 
     private void bindIndividual(IndividualConversation conversation) {
@@ -180,9 +180,10 @@ public class ProfileActivity extends AppCompatActivity {
         fabVoiceCall.setImageResource(R.drawable.ic_call_white_24dp);
 
 
-        LinearLayout.LayoutParams params = ViewUtil.getParams(this, 6);
-        mFabContainer.addView(fabVoiceCall, params);
-        mFabContainer.addView(fabVideoCall, params);
+        mRoot.addView(fabVideoCall,
+                ViewUtil.getCoordinatorLayoutParams(this, R.id.app_bar, 16));
+        mRoot.addView(fabVoiceCall,
+                ViewUtil.getCoordinatorLayoutParams(this, R.id.app_bar, 64));
     }
 
     private final static class FabClickListener implements View.OnClickListener {
