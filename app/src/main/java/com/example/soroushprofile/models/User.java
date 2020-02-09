@@ -3,17 +3,9 @@ package com.example.soroushprofile.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.soroushprofile.R;
+import com.annimon.stream.Optional;
 
 public class User {
-
-    private static User INSTANCE;
-
-    public static User getInstance(boolean hasContent) {
-        if (INSTANCE == null)
-            INSTANCE = new User("Farhad Azad", R.drawable.p02, hasContent);
-        return INSTANCE;
-    }
 
     @NonNull
     private final String name;
@@ -21,17 +13,14 @@ public class User {
     @Nullable
     private Integer avatar;
 
-    @NonNull
-    private final Boolean hasContent;
+    @Nullable
+    private Optional<String> bio;
 
-    public User(@NonNull String name, @Nullable Integer avatar) {
-        this(name, avatar, false);
-    }
 
-    public User(@NonNull String name, @Nullable Integer avatar, @NonNull Boolean hasContent) {
+    public User(@NonNull String name, @Nullable Integer avatar, Optional<String> bio) {
         this.name = name;
         this.avatar = avatar;
-        this.hasContent = hasContent;
+        this.bio = bio;
     }
 
     @NonNull
@@ -44,8 +33,8 @@ public class User {
         return avatar;
     }
 
-    @NonNull
-    public Boolean hasContent() {
-        return hasContent;
+    @Nullable
+    public Optional<String> getBio() {
+        return bio;
     }
 }

@@ -14,9 +14,17 @@
         <item quantity="other">%d subscribers</item>
     </plurals>
     <string name="profile_user_media_category_title">Media</string>
+    <string name="profile_user_media_category_more_title">More</string>
     <string name="profile_user_media_no_media_individual">No shared media with %s.</string>
     <string name="profile_user_media_no_media_group">No shared media in this group.</string>
-    <string name="profile_user_media_no_media_channel">No shared media with in this channel.</string>
+    <string name="profile_user_media_no_media_channel">No shared media in this channel.</string>
+    <string name="profile_user_restrict_individual">Block</string>
+    <string name="profile_user_restrict_group">Leave Group</string>
+    <string name="profile_user_restrict_channel">Leave Channel</string>
+    <string name="profile_user_description_bio_title">Bio</string>
+    <string name="profile_user_description_title">Description</string>
+    <string name="profile_user_description_bio_empty">Add your bio here&#8230;</string>
+    <string name="profile_user_description_empty">Add description here&#8230;</string>
 
 
 </resources>

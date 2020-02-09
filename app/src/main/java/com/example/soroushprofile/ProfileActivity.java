@@ -14,15 +14,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.palette.graphics.Palette;
 
 import com.example.soroushprofile.avatar.ProfileAvatar;
 import com.example.soroushprofile.models.ChannelConversation;
-import com.example.soroushprofile.models.ConversationFactory;
 import com.example.soroushprofile.models.ConversationThread;
-import com.example.soroushprofile.models.ConversationType;
 import com.example.soroushprofile.models.GroupConversation;
 import com.example.soroushprofile.models.IndividualConversation;
+import com.example.soroushprofile.userprofile.ProfileViewModel;
 import com.example.soroushprofile.util.ColorUtil;
 import com.example.soroushprofile.util.ViewUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -33,8 +33,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final static String TAG = ProfileActivity.class.getSimpleName();
     public final static String CONVERSATION_TYPE = "conversation_type";
-
-    private ConversationThread thread;
 
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ImageView mHeaderImageView;
@@ -50,8 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         initializeRes();
         initializeToolbar();
-        initializeThread();
-        bindThread();
+        bindViewModel();
     }
 
     @Override
@@ -92,7 +89,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void initializeProfileAvatar() {
+    private void bindViewModel() {
+        ProfileViewModel model = new ViewModelProvider(this).get(ProfileViewModel.class);
+        String key = getIntent().getStringExtra(CONVERSATION_TYPE);
+        model.getConversationThread(key).observe(this, this::bindThread);
+    }
+
+
+    private void initializeProfileAvatar(ConversationThread thread) {
         ProfileAvatar.of(this, thread, mAvatarImageView, mHeaderImageView, this::initializeColorPalette);
     }
 
@@ -116,25 +120,19 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void initializeThread() {
-        String value = getIntent().getStringExtra(CONVERSATION_TYPE);
-        ConversationType type = ConversationType.valueOf(value);
-        this.thread = ConversationFactory.getThread(type);
-    }
-
-
-    private void bindThread() {
-        initializeProfileAvatar();
+    private void bindThread(ConversationThread thread) {
+        initializeProfileAvatar(thread);
         mUsernameTextView.setText(thread.getTitle());
-        if (thread instanceof IndividualConversation) {
-            IndividualConversation conversation = (IndividualConversation) thread;
-            bindIndividual(conversation);
-        } else if (thread instanceof GroupConversation) {
-            GroupConversation conversation = (GroupConversation) thread;
-            bindGroup(conversation);
-        } else if (thread instanceof ChannelConversation) {
-            ChannelConversation conversation = (ChannelConversation) thread;
-            bindChannel(conversation);
+        switch (thread.getType()) {
+            case individual:
+                bindIndividual((IndividualConversation) thread);
+                break;
+            case group:
+                bindGroup((GroupConversation) thread);
+                break;
+            case channel:
+                bindChannel((ChannelConversation) thread);
+                break;
         }
     }
 

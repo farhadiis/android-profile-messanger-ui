@@ -11,20 +11,20 @@
     <Preference
         app:allowDividerBelow="false"
         app:iconSpaceReserved="false"
+        app:key="description_preference"
         app:summary="Bio"
-        app:title="27 y.o. designer from tehran, iran..., The Biotechnology Innovation Organization
-         is the largest trade organization in the world that represents the biotechnology industry." />
+        app:title="bio" />
 
     <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
 
-    <PreferenceCategory
+    <com.example.soroushprofile.prefrences.widgets.SoroushPreferenceCategory
         app:iconSpaceReserved="false"
         app:key="user_media_preference_category">
 
         <com.example.soroushprofile.prefrences.widgets.UserMediaPreference
             app:key="user_media_preference"
             app:selectable="false" />
-    </PreferenceCategory>
+    </com.example.soroushprofile.prefrences.widgets.SoroushPreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:layout="@layout/preference_divider" />
 
@@ -44,8 +44,8 @@
 
         <com.example.soroushprofile.prefrences.widgets.SoroushPreference
             app:iconSpaceReserved="false"
-            app:key="block_preference"
-            app:title="Block" />
+            app:key="restrict_preference"
+            app:title="Restrict" />
 
     </PreferenceCategory>
 
