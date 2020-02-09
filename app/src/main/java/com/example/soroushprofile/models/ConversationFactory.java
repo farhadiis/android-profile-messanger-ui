@@ -13,7 +13,7 @@ public final class ConversationFactory {
             case individual:
                 String bio = "27 y.o. designer from tehran, iran..., The Biotechnology Innovation Organization\n" +
                         " is the largest trade organization in the world that represents the biotechnology industry.";
-                User user = new User("Farhad Azad", R.drawable.p02, Optional.of(bio));
+                User user = new User("Farhad Azad", R.drawable.p01, Optional.of(bio));
                 List<String> media = new ArrayList<String>() {{
                     add("1.jpg");
                     add("2.jpg");
