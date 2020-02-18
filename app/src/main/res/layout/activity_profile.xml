@@ -142,12 +142,12 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/settings_preference"
-        android:name="com.example.soroushprofile.prefrences.SettingsPreference"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/settings_preference"-->
+<!--        android:name="com.example.soroushprofile.prefrences.SettingsPreference"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
 
 </com.example.soroushprofile.components.layouts.ParallaxLayout>
