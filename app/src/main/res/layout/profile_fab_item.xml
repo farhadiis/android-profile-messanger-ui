@@ -5,6 +5,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:fabSize="mini"
-    app:layout_anchor="@id/app_bar"
-    tools:context=".ProfileActivity"
     tools:src="@drawable/ic_video_call_white_24dp" />

@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-
 import com.example.soroushprofile.R
 import com.example.soroushprofile.util.Util
 import com.google.android.material.appbar.AppBarLayout
@@ -67,6 +66,7 @@ class ParallaxLayout : CoordinatorLayout {
 
         val mAppBarLayout = findViewById<AppBarLayout>(R.id.app_bar)
         mAppBarLayout.addOnOffsetChangedListener(mAppBarStateChangeListener)
+        mAppBarLayout.viewTreeObserver.addOnGlobalLayoutListener { onWindowFocusChanged(false) }
     }
 
     private fun init() {

@@ -1,16 +1,14 @@
 package com.example.soroushprofile
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import com.example.soroushprofile.avatar.AvatarPaletteDelegate
 import com.example.soroushprofile.avatar.ProfileAvatar
@@ -23,57 +21,64 @@ import com.example.soroushprofile.util.ColorUtil
 import com.example.soroushprofile.util.fabutil.FabClickListener
 import com.example.soroushprofile.util.fabutil.FabInjectProcessor
 import com.example.soroushprofile.util.fabutil.FabOption
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
+class ProfileFragment : Fragment() {
 
-class ProfileActivity : AppCompatActivity() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
 
-    companion object {
-        const val CONVERSATION_TYPE = "conversation_type"
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        bindViewModel()
+        initializeToolbar()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-        initializeToolbar()
-        bindViewModel()
+        setHasOptionsMenu(true);
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_profile, menu)
-        return true
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_profile, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                findNavController().popBackStack()
                 return true
             }
-            R.id.more_settings -> Toast.makeText(this,
+            R.id.more_settings -> Toast.makeText(context,
                     "More Option Trigger...", Toast.LENGTH_SHORT).show()
             else -> return super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
     }
 
+
     private fun initializeToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        val activity = (activity as AppCompatActivity)
+        activity.setSupportActionBar(toolbar)
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity.supportActionBar?.setDisplayShowTitleEnabled(false)
 
     }
 
     private fun bindViewModel() {
         val model = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        val type = intent.getStringExtra(CONVERSATION_TYPE)
-        model.getConversationThread(type).observe(this,
-                Observer<ConversationThread> { t -> bindConversationThread(t) })
+        arguments?.let {
+            val type = ProfileFragmentArgs.fromBundle(it).conversationType
+            model.getConversationThread(type).observe(viewLifecycleOwner,
+                    Observer<ConversationThread> { t -> bindConversationThread(t) })
+        }
     }
 
     private fun initializeProfileAvatar(thread: ConversationThread) {
-        ProfileAvatar.of(this, thread, avatar_image_view, header_image_view, object : AvatarPaletteDelegate {
+        ProfileAvatar.of(requireActivity(), thread, avatar_image_view, header_image_view, object : AvatarPaletteDelegate {
             override fun onPalette(palette: Palette?) {
                 initializeColorPalette(palette)
             }
@@ -81,22 +86,16 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initializeColorPalette(palette: Palette?) {
-        val colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary)
-        val colorPrimaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        val colorPrimary = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        val colorPrimaryDark = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
         if (palette != null) {
             val vibrantColor = palette.getMutedColor(colorPrimary)
             toolbar_layout.setContentScrimColor(vibrantColor)
             val darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f)
             toolbar_layout.setStatusBarScrimColor(darkVibrantColor)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor = Color.TRANSPARENT
-            }
         } else {
             toolbar_layout.setContentScrimColor(colorPrimary)
             toolbar_layout.setStatusBarScrimColor(colorPrimaryDark)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor = colorPrimaryDark
-            }
         }
     }
 
@@ -122,11 +121,10 @@ class ProfileActivity : AppCompatActivity() {
         fabInjector.onInject()
         fabInjector.mFabListener = object : FabClickListener {
             override fun onFabClick(option: FabOption) {
-                Toast.makeText(this@ProfileActivity,
-                        "Fav Option Trigger... ${option.name}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                        "Fab Option Trigger... ${option.name}", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
 }

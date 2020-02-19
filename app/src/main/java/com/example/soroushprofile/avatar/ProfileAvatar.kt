@@ -51,7 +51,7 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
             activity.startPostponedEnterTransition()
         }
         if (resource != null) {
-            Palette.from(resource).generate { delegate }
+            Palette.from(resource).generate { delegate.onPalette(it) }
         }
         return false
     }
