@@ -10,7 +10,7 @@ object ConversationFactory {
             ConversationType.Individual -> {
                 val bio = "27 y.o. designer from tehran, iran..., The Biotechnology Innovation Organization" +
                         " is the largest trade organization in the world that represents the biotechnology industry."
-                val user = User("Farhad Azad", R.drawable.p01, bio)
+                val user = User("Farhad Azad", R.drawable.header, bio)
                 val media = object : ArrayList<String>() {
                     init {
                         add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-2-634x467.jpg")

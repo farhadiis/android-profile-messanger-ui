@@ -28,6 +28,7 @@
     <string name="profile_user_description_empty">Add description here&#8230;</string>
     <string name="profile_user_notification">Notification</string>
     <string name="profile_user_clear_conversation">Clear Conversation</string>
+    <string name="profile_user_preferences">Preferences</string>
 
 
 </resources>

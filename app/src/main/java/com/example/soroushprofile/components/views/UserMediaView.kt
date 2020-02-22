@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.example.soroushprofile.R
@@ -35,12 +34,7 @@ class UserMediaView : FrameLayout {
 
     private fun initialize() {
         inflate(context, R.layout.user_media_view, this)
-        initializeRes()
         initializeList()
-    }
-
-    private fun initializeRes() {
-        right_summary.setOnClickListener { Toast.makeText(context, "More...", Toast.LENGTH_SHORT).show() }
     }
 
     private fun initializeList() {
@@ -70,16 +64,12 @@ class UserMediaView : FrameLayout {
     private fun setMedia(media: List<String>) {
         recycler_view.visibility = View.VISIBLE
         no_content.visibility = View.GONE
-        right_summary.visibility = View.VISIBLE
-        title.visibility = View.VISIBLE
         getAdapter().list = media
     }
 
     private fun setPlaceholder() {
         no_content.visibility = View.VISIBLE
         recycler_view.visibility = View.GONE
-        right_summary.visibility = View.GONE
-        title.visibility = View.GONE
         no_content.text = when (thread?.type) {
             ConversationType.Individual -> {
                 val conversation = thread as IndividualConversation
