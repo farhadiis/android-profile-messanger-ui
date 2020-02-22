@@ -1,9 +1,10 @@
-package com.example.soroushprofile.avatar
+package com.example.soroushprofile.userprofile.avatar
 
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Build
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 
 import com.bumptech.glide.Glide
@@ -15,12 +16,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
+import com.example.soroushprofile.util.ColorUtil
+import com.google.android.material.appbar.CollapsingToolbarLayout
 
 import jp.wasabeef.glide.transformations.BlurTransformation
 
-abstract class ProfileAvatar internal constructor(internal val activity: Activity, val thread: ConversationThread,
+abstract class ProfileAvatar internal constructor(internal val activity: Activity,
+                                                  protected val thread: ConversationThread,
                                                   private val mHeaderImageView: ImageView,
-                                                  private val delegate: AvatarPaletteDelegate) : RequestListener<Bitmap> {
+                                                  private val toolbarLayout: CollapsingToolbarLayout) : RequestListener<Bitmap> {
 
     abstract fun drawAvatar(imageView: ImageView)
 
@@ -35,7 +39,21 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
                     .listener(this)
                     .into(mHeaderImageView)
         } else {
-            delegate.onPalette(null)
+            initializeColorPalette(null)
+        }
+    }
+
+    private fun initializeColorPalette(palette: Palette?) {
+        val colorPrimary = ContextCompat.getColor(activity, R.color.colorPrimary)
+        val colorPrimaryDark = ContextCompat.getColor(activity, R.color.colorPrimaryDark)
+        if (palette != null) {
+            val vibrantColor = palette.getMutedColor(colorPrimary)
+            toolbarLayout.setContentScrimColor(vibrantColor)
+            val darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f)
+            toolbarLayout.setStatusBarScrimColor(darkVibrantColor)
+        } else {
+            toolbarLayout.setContentScrimColor(colorPrimary)
+            toolbarLayout.setStatusBarScrimColor(colorPrimaryDark)
         }
     }
 
@@ -51,23 +69,23 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
             activity.startPostponedEnterTransition()
         }
         if (resource != null) {
-            Palette.from(resource).generate { delegate.onPalette(it) }
+            Palette.from(resource).generate { initializeColorPalette(it) }
+        } else {
+            initializeColorPalette(null)
         }
         return false
     }
 
     companion object {
 
-
-        fun of(activity: Activity, thread: ConversationThread,
-               mAvatarImageView: ImageView, mHeaderImageView: ImageView,
-               delegate: AvatarPaletteDelegate) {
+        fun show(activity: Activity, thread: ConversationThread,
+               mAvatarImageView: ImageView, mHeaderImageView: ImageView, mToolbarLayout: CollapsingToolbarLayout) {
 
             val profileAvatar: ProfileAvatar
             if (thread.avatar != null)
-                profileAvatar = ImageProfileAvatar(activity, thread, mHeaderImageView, delegate)
+                profileAvatar = ImageProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout)
             else
-                profileAvatar = TextProfileAvatar(activity, thread, mHeaderImageView, delegate)
+                profileAvatar = TextProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout)
 
             profileAvatar.drawHeader()
             profileAvatar.drawAvatar(mAvatarImageView)

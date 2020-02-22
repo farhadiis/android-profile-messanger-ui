@@ -1,4 +1,4 @@
-package com.example.soroushprofile.avatar
+package com.example.soroushprofile.userprofile.avatar
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -10,10 +10,12 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
+import com.google.android.material.appbar.CollapsingToolbarLayout
 
-class TextProfileAvatar internal constructor(activity: Activity, thread: ConversationThread,
+class TextProfileAvatar internal constructor(activity: Activity,
+                                             thread: ConversationThread,
                                              mHeaderImageView: ImageView,
-                                             delegate: AvatarPaletteDelegate) : ProfileAvatar(activity, thread, mHeaderImageView, delegate) {
+                                             mToolbarLayout: CollapsingToolbarLayout) : ProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout) {
 
     override fun drawAvatar(imageView: ImageView) {
         val title = thread.title

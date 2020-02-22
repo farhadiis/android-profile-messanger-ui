@@ -1,14 +1,18 @@
 package com.example.soroushprofile.components.layouts
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.soroushprofile.R
 import com.example.soroushprofile.util.Util
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.fragment_profile.view.*
+
 
 class ParallaxLayout : CoordinatorLayout {
 
@@ -32,6 +36,9 @@ class ParallaxLayout : CoordinatorLayout {
     private val mUsernamePinPoint = FloatArray(2)
     private val mStatusPoint = FloatArray(2)
     private val mStatusPinPoint = FloatArray(2)
+
+
+    private var layoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -57,6 +64,7 @@ class ParallaxLayout : CoordinatorLayout {
     }
 
     private fun initializeRes() {
+
         mAvatarImageView = findViewById(R.id.avatar_image_view)
         mPinAvatarView = findViewById(R.id.pin_avatar_view)
         mUsernameTextView = findViewById(R.id.username)
@@ -64,9 +72,18 @@ class ParallaxLayout : CoordinatorLayout {
         mStatusTextView = findViewById(R.id.status)
         mPinStatusTextView = findViewById(R.id.pin_status)
 
-        val mAppBarLayout = findViewById<AppBarLayout>(R.id.app_bar)
-        mAppBarLayout.addOnOffsetChangedListener(mAppBarStateChangeListener)
-        mAppBarLayout.viewTreeObserver.addOnGlobalLayoutListener { onWindowFocusChanged(false) }
+
+        app_bar.addOnOffsetChangedListener(mAppBarStateChangeListener)
+
+        layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                app_bar.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+            } else {
+                app_bar.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
+            }
+            onWindowFocusChanged(false)
+        }
+        app_bar.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     private fun init() {
@@ -94,9 +111,10 @@ class ParallaxLayout : CoordinatorLayout {
 
         mAvatarImageView!!.translationX = xAvatarOffset
         mAvatarImageView!!.translationY = yAvatarOffset
-        mAvatarImageView!!.layoutParams.width = newAvatarSize
-        mAvatarImageView!!.layoutParams.height = newAvatarSize
-        mAvatarImageView!!.requestLayout()
+        val params = mAvatarImageView!!.layoutParams
+        params.width = newAvatarSize
+        params.height = newAvatarSize
+        mAvatarImageView!!.layoutParams = params
 
         val xTitleOffset = (mUsernamePinPoint[0] - mUsernamePoint[0] + scaleAvatar) * offset
         val yTitleOffset = (mUsernamePinPoint[1] - mUsernamePoint[1]) * offset

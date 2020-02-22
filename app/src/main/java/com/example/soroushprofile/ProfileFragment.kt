@@ -1,25 +1,23 @@
 package com.example.soroushprofile
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.palette.graphics.Palette
-import com.example.soroushprofile.avatar.AvatarPaletteDelegate
-import com.example.soroushprofile.avatar.ProfileAvatar
 import com.example.soroushprofile.models.ChannelConversation
 import com.example.soroushprofile.models.ConversationThread
 import com.example.soroushprofile.models.ConversationType
 import com.example.soroushprofile.models.GroupConversation
+import com.example.soroushprofile.userprofile.FabPageProfile
+import com.example.soroushprofile.userprofile.ProfilePage
 import com.example.soroushprofile.userprofile.ProfileViewModel
-import com.example.soroushprofile.util.ColorUtil
+import com.example.soroushprofile.userprofile.avatar.ProfileAvatar
 import com.example.soroushprofile.util.fabutil.FabClickListener
-import com.example.soroushprofile.util.fabutil.FabInjectProcessor
 import com.example.soroushprofile.util.fabutil.FabOption
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -39,7 +37,23 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true);
+        initializeWindow(false)
+
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        initializeWindow(true)
+    }
+
+
+    private fun initializeWindow(k: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity?.window?.decorView?.systemUiVisibility =
+                    if (k) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_profile, menu)
@@ -77,30 +91,9 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun initializeProfileAvatar(thread: ConversationThread) {
-        ProfileAvatar.of(requireActivity(), thread, avatar_image_view, header_image_view, object : AvatarPaletteDelegate {
-            override fun onPalette(palette: Palette?) {
-                initializeColorPalette(palette)
-            }
-        })
-    }
-
-    private fun initializeColorPalette(palette: Palette?) {
-        val colorPrimary = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-        val colorPrimaryDark = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
-        if (palette != null) {
-            val vibrantColor = palette.getMutedColor(colorPrimary)
-            toolbar_layout.setContentScrimColor(vibrantColor)
-            val darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f)
-            toolbar_layout.setStatusBarScrimColor(darkVibrantColor)
-        } else {
-            toolbar_layout.setContentScrimColor(colorPrimary)
-            toolbar_layout.setStatusBarScrimColor(colorPrimaryDark)
-        }
-    }
-
     private fun bindConversationThread(thread: ConversationThread) {
-        initializeProfileAvatar(thread)
+
+        ProfileAvatar.show(requireActivity(), thread, avatar_image_view, header_image_view, toolbar_layout)
 
         username.text = thread.title
         status.text = when (thread.type) {
@@ -117,14 +110,17 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        val fabInjector = FabInjectProcessor(thread, layoutInflater, root)
-        fabInjector.onInject()
-        fabInjector.mFabListener = object : FabClickListener {
+        val fabInjector = FabPageProfile(thread, layoutInflater, root)
+        fabInjector.onInject(object : FabClickListener {
             override fun onFabClick(option: FabOption) {
                 Toast.makeText(context,
                         "Fab Option Trigger... ${option.name}", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
+
+        val profilePage = ProfilePage(thread, layoutInflater, body)
+        profilePage.onCreate()
+
     }
 
 }

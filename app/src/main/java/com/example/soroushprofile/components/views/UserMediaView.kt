@@ -3,19 +3,21 @@ package com.example.soroushprofile.components.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.FrameLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
+import com.example.soroushprofile.models.ConversationType
+import com.example.soroushprofile.models.IndividualConversation
+import com.example.soroushprofile.userprofile.UserMediaProfileAdapter
+import kotlinx.android.synthetic.main.user_media_view.view.*
 
-class UserMediaView : View {
+class UserMediaView : FrameLayout {
 
     private var thread: ConversationThread? = null
 
-    private var mRecyclerView: RecyclerView? = null
-    private var mNoContentTextView: TextView? = null
-
-
-    constructor(context: Context) : super(context) {
+    constructor(context: Context, thread: ConversationThread) : super(context) {
+        this.thread = thread
         initialize()
     }
 
@@ -28,56 +30,52 @@ class UserMediaView : View {
     }
 
     private fun initialize() {
-
+        inflate(context, R.layout.user_media_view, this)
+        initializeRes()
     }
 
 
-//    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-//        super.onBindViewHolder(holder)
-//
-//        mRecyclerView = holder.itemView.findViewById(R.id.recycler_view)
-//        mNoContentTextView = holder.itemView.findViewById(R.id.no_content)
-//
-//        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        val adapter = UserMediaProfileAdapter(null)
-//        mRecyclerView!!.setHasFixedSize(true)
-//        mRecyclerView!!.layoutManager = layoutManager
-//        mRecyclerView!!.adapter = adapter
-//        mRecyclerView!!.isNestedScrollingEnabled = false
-//
-//
-//        refresh(thread!!)
-//    }
-//
-//    fun refresh(thread: ConversationThread) {
-//        this.thread = thread
-//        if (thread.media!!.isEmpty()) {
-//            if (mNoContentTextView == null) return
-//            mNoContentTextView!!.visibility = View.VISIBLE
-//            mRecyclerView!!.visibility = View.GONE
-//            setPlaceholder(thread)
-//        } else {
-//            if (mRecyclerView == null) return
-//            mRecyclerView!!.visibility = View.VISIBLE
-//            mNoContentTextView!!.visibility = View.GONE
-//            setMedia(thread)
-//        }
-//    }
-//
-//    private fun setMedia(thread: ConversationThread) {}
-//
-//    private fun setPlaceholder(thread: ConversationThread) {
-//        val placeholder: String
-//        when (thread.type) {
-//            ConversationType.Individual -> {
-//                val conversation = thread as IndividualConversation
-//                placeholder = context.getString(R.string.profile_user_media_no_media_individual,
-//                        conversation.user.name)
-//            }
-//            ConversationType.Group -> placeholder = context.getString(R.string.profile_user_media_no_media_group)
-//            ConversationType.Channel -> placeholder = context.getString(R.string.profile_user_media_no_media_channel)
-//            else -> throw IllegalArgumentException("invalid argument")
-//        }
-//        mNoContentTextView!!.text = placeholder
-//    }
+    private fun initializeRes() {
+
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val adapter = UserMediaProfileAdapter(null)
+        recycler_view.setHasFixedSize(true)
+        recycler_view.layoutManager = layoutManager
+        recycler_view.adapter = adapter
+        recycler_view.isNestedScrollingEnabled = false
+        refresh()
+    }
+
+
+    private fun refresh() {
+        val a = thread?.media?.let {
+            setPlaceholder()
+        } ?: run {
+            setMedia()
+        }
+    }
+
+    private fun setMedia() {
+        recycler_view.visibility = View.VISIBLE
+        no_content.visibility = View.GONE
+        right_summary.visibility = View.VISIBLE
+        title.visibility = View.VISIBLE
+    }
+
+    private fun setPlaceholder() {
+        no_content.visibility = View.VISIBLE
+        recycler_view.visibility = View.GONE
+        right_summary.visibility = View.GONE
+        title.visibility = View.GONE
+        no_content.text = when (thread?.type) {
+            ConversationType.Individual -> {
+                val conversation = thread as IndividualConversation
+                context.getString(R.string.profile_user_media_no_media_individual,
+                        conversation.user.name)
+            }
+            ConversationType.Group -> context.getString(R.string.profile_user_media_no_media_group)
+            ConversationType.Channel -> context.getString(R.string.profile_user_media_no_media_channel)
+            else -> throw IllegalArgumentException("invalid args")
+        }
+    }
 }
