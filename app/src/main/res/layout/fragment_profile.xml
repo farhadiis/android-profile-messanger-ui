@@ -101,10 +101,10 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginLeft="24dp"
                     android:layout_marginBottom="16dp"
-                    android:src="@drawable/placeholder"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="contentDescription" />
+                    tools:ignore="contentDescription"
+                    tools:src="@drawable/placeholder" />
 
                 <TextView
                     android:id="@+id/username"
