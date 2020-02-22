@@ -13,8 +13,20 @@ object ConversationFactory {
                 val user = User("Farhad Azad", R.drawable.p01, bio)
                 val media = object : ArrayList<String>() {
                     init {
-                        add("1.jpg")
-                        add("2.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-2-634x467.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-3.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-5-634x475.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-101-634x475.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-14-634x396.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-16-634x410.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-19-634x396.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-2-634x467.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-3.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-5-634x475.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-101-634x475.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-14-634x396.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-16-634x410.jpg")
+                        add("https://baelm.net/wp-content/uploads/2014/11/Nature-Photo-19-634x396.jpg")
                     }
                 }
                 return IndividualConversation(media, user)

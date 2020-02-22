@@ -6,8 +6,7 @@ import android.os.Build
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
-
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
@@ -18,20 +17,19 @@ import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
 import com.example.soroushprofile.util.ColorUtil
 import com.google.android.material.appbar.CollapsingToolbarLayout
-
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 abstract class ProfileAvatar internal constructor(internal val activity: Activity,
                                                   protected val thread: ConversationThread,
                                                   private val mHeaderImageView: ImageView,
+                                                  protected val glide: RequestManager,
                                                   private val toolbarLayout: CollapsingToolbarLayout) : RequestListener<Bitmap> {
 
     abstract fun drawAvatar(imageView: ImageView)
 
     private fun drawHeader() {
         if (thread.avatar != null) {
-            Glide.with(activity)
-                    .asBitmap()
+            glide.asBitmap()
                     .load(thread.avatar)
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 3)))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -79,13 +77,13 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
     companion object {
 
         fun show(activity: Activity, thread: ConversationThread,
-               mAvatarImageView: ImageView, mHeaderImageView: ImageView, mToolbarLayout: CollapsingToolbarLayout) {
+                 mAvatarImageView: ImageView, mHeaderImageView: ImageView, glide: RequestManager, mToolbarLayout: CollapsingToolbarLayout) {
 
             val profileAvatar: ProfileAvatar
             if (thread.avatar != null)
-                profileAvatar = ImageProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout)
+                profileAvatar = ImageProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
             else
-                profileAvatar = TextProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout)
+                profileAvatar = TextProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
 
             profileAvatar.drawHeader()
             profileAvatar.drawAvatar(mAvatarImageView)

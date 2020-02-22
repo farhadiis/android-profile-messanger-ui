@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.RequestManager
 import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
 import com.example.soroushprofile.models.ConversationType
@@ -14,10 +16,12 @@ import kotlinx.android.synthetic.main.user_media_view.view.*
 
 class UserMediaView : FrameLayout {
 
+    private var glide: RequestManager? = null
     private var thread: ConversationThread? = null
 
-    constructor(context: Context, thread: ConversationThread) : super(context) {
+    constructor(context: Context, thread: ConversationThread, glide: RequestManager) : super(context) {
         this.thread = thread
+        this.glide = glide
         initialize()
     }
 
@@ -32,34 +36,43 @@ class UserMediaView : FrameLayout {
     private fun initialize() {
         inflate(context, R.layout.user_media_view, this)
         initializeRes()
+        initializeList()
     }
-
 
     private fun initializeRes() {
-
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = UserMediaProfileAdapter(null)
-        recycler_view.setHasFixedSize(true)
-        recycler_view.layoutManager = layoutManager
-        recycler_view.adapter = adapter
-        recycler_view.isNestedScrollingEnabled = false
-        refresh()
+        right_summary.setOnClickListener { Toast.makeText(context, "More...", Toast.LENGTH_SHORT).show() }
     }
 
+    private fun initializeList() {
+        recycler_view.setHasFixedSize(true)
+        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recycler_view.adapter = UserMediaProfileAdapter(null, glide!!)
+        recycler_view.isNestedScrollingEnabled = false
+    }
 
-    private fun refresh() {
-        val a = thread?.media?.let {
-            setPlaceholder()
+    private fun getAdapter(): UserMediaProfileAdapter = recycler_view.adapter as UserMediaProfileAdapter
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        load()
+    }
+
+    private fun load() {
+        thread?.media?.let {
+            if (it.isEmpty()) setPlaceholder() else {
+                setMedia(it)
+            }
         } ?: run {
-            setMedia()
+            setPlaceholder()
         }
     }
 
-    private fun setMedia() {
+    private fun setMedia(media: List<String>) {
         recycler_view.visibility = View.VISIBLE
         no_content.visibility = View.GONE
         right_summary.visibility = View.VISIBLE
         title.visibility = View.VISIBLE
+        getAdapter().list = media
     }
 
     private fun setPlaceholder() {

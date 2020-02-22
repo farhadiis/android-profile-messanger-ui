@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.RequestManager
 import com.example.soroushprofile.R
 import com.example.soroushprofile.models.ConversationThread
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -15,7 +16,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 class TextProfileAvatar internal constructor(activity: Activity,
                                              thread: ConversationThread,
                                              mHeaderImageView: ImageView,
-                                             mToolbarLayout: CollapsingToolbarLayout) : ProfileAvatar(activity, thread, mHeaderImageView, mToolbarLayout) {
+                                             glide: RequestManager,
+                                             mToolbarLayout: CollapsingToolbarLayout) : ProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout) {
 
     override fun drawAvatar(imageView: ImageView) {
         val title = thread.title

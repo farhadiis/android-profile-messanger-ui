@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.Toast
+import com.bumptech.glide.RequestManager
 import com.example.soroushprofile.R
 import com.example.soroushprofile.components.views.ProfileItemView
 import com.example.soroushprofile.components.views.UserMediaView
@@ -16,6 +17,7 @@ import com.example.soroushprofile.util.PageConstructor
 
 class ProfilePage constructor(private val thread: ConversationThread,
                               private val inflater: LayoutInflater,
+                              private val glide: RequestManager,
                               private val body: ViewGroup) : PageConstructor {
 
     private val divider: View
@@ -57,7 +59,7 @@ class ProfilePage constructor(private val thread: ConversationThread,
 
         body.addView(divider)
 
-        val userMediaView = UserMediaView(context, thread)
+        val userMediaView = UserMediaView(context, thread, glide)
         body.addView(userMediaView)
 
         body.addView(divider)

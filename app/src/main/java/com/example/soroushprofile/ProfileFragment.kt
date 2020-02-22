@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.soroushprofile.models.ChannelConversation
 import com.example.soroushprofile.models.ConversationThread
 import com.example.soroushprofile.models.ConversationType
@@ -93,7 +94,8 @@ class ProfileFragment : Fragment() {
 
     private fun bindConversationThread(thread: ConversationThread) {
 
-        ProfileAvatar.show(requireActivity(), thread, avatar_image_view, header_image_view, toolbar_layout)
+        ProfileAvatar.show(requireActivity(), thread, avatar_image_view, header_image_view,
+                Glide.with(this), toolbar_layout)
 
         username.text = thread.title
         status.text = when (thread.type) {
@@ -118,7 +120,7 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        val profilePage = ProfilePage(thread, layoutInflater, body)
+        val profilePage = ProfilePage(thread, layoutInflater, Glide.with(this), body)
         profilePage.onCreate()
 
     }
