@@ -14,21 +14,25 @@ abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener 
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, i: Int) {
-        if (i == 0) {
-            if (currentState != State.EXPANDED) {
-                onStateChanged(appBarLayout, State.EXPANDED)
+        when {
+            i == 0 -> {
+                if (currentState != State.EXPANDED) {
+                    onStateChanged(appBarLayout, State.EXPANDED)
+                }
+                currentState = State.EXPANDED
             }
-            currentState = State.EXPANDED
-        } else if (Math.abs(i) >= appBarLayout.totalScrollRange) {
-            if (currentState != State.COLLAPSED) {
-                onStateChanged(appBarLayout, State.COLLAPSED)
+            Math.abs(i) >= appBarLayout.totalScrollRange -> {
+                if (currentState != State.COLLAPSED) {
+                    onStateChanged(appBarLayout, State.COLLAPSED)
+                }
+                currentState = State.COLLAPSED
             }
-            currentState = State.COLLAPSED
-        } else {
-            if (currentState != State.IDLE) {
-                onStateChanged(appBarLayout, State.IDLE)
+            else -> {
+                if (currentState != State.IDLE) {
+                    onStateChanged(appBarLayout, State.IDLE)
+                }
+                currentState = State.IDLE
             }
-            currentState = State.IDLE
         }
         val offset = Math.abs(i / appBarLayout.totalScrollRange.toFloat())
         if (offset != currentOffset) {

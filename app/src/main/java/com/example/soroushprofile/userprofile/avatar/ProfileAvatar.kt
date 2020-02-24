@@ -44,12 +44,12 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
     private fun initializeColorPalette(palette: Palette?) {
         val colorPrimary = ContextCompat.getColor(activity, R.color.colorPrimary)
         val colorPrimaryDark = ContextCompat.getColor(activity, R.color.colorPrimaryDark)
-        if (palette != null) {
-            val vibrantColor = palette.getMutedColor(colorPrimary)
+        palette?.let {
+            val vibrantColor = it.getMutedColor(colorPrimary)
             toolbarLayout.setContentScrimColor(vibrantColor)
             val darkVibrantColor = ColorUtil.manipulateColor(vibrantColor, 0.8f)
             toolbarLayout.setStatusBarScrimColor(darkVibrantColor)
-        } else {
+        } ?: run {
             toolbarLayout.setContentScrimColor(colorPrimary)
             toolbarLayout.setStatusBarScrimColor(colorPrimaryDark)
         }
@@ -66,9 +66,9 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.startPostponedEnterTransition()
         }
-        if (resource != null) {
-            Palette.from(resource).generate { initializeColorPalette(it) }
-        } else {
+        resource?.let {
+            Palette.from(it).generate { initializeColorPalette(it) }
+        } ?: run {
             initializeColorPalette(null)
         }
         return false
@@ -79,11 +79,9 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
         fun show(activity: Activity, thread: ConversationThread,
                  mAvatarImageView: ImageView, mHeaderImageView: ImageView, glide: RequestManager, mToolbarLayout: CollapsingToolbarLayout) {
 
-            val profileAvatar: ProfileAvatar
-            if (thread.avatar != null)
-                profileAvatar = ImageProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
-            else
-                profileAvatar = TextProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
+            val profileAvatar = if (thread.avatar != null)
+                ImageProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
+            else TextProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
 
             profileAvatar.drawHeader()
             profileAvatar.drawAvatar(mAvatarImageView)
