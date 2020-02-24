@@ -38,23 +38,22 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true);
-        initializeWindow(false)
+        setDarkStatusBarTo(false)
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        initializeWindow(true)
+        setDarkStatusBarTo(true)
     }
 
 
-    private fun initializeWindow(k: Boolean) {
+    private fun setDarkStatusBarTo(k: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity?.window?.decorView?.systemUiVisibility =
                     if (k) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_profile, menu)

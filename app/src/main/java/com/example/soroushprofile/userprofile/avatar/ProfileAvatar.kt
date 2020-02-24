@@ -55,14 +55,16 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
         }
     }
 
-    override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Bitmap>, isFirstResource: Boolean): Boolean {
+    override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Bitmap>,
+                              isFirstResource: Boolean): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.startPostponedEnterTransition()
         }
         return false
     }
 
-    override fun onResourceReady(resource: Bitmap?, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+    override fun onResourceReady(resource: Bitmap?, model: Any, target: Target<Bitmap>,
+                                 dataSource: DataSource, isFirstResource: Boolean): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.startPostponedEnterTransition()
         }
@@ -77,7 +79,8 @@ abstract class ProfileAvatar internal constructor(internal val activity: Activit
     companion object {
 
         fun show(activity: Activity, thread: ConversationThread,
-                 mAvatarImageView: ImageView, mHeaderImageView: ImageView, glide: RequestManager, mToolbarLayout: CollapsingToolbarLayout) {
+                 mAvatarImageView: ImageView, mHeaderImageView: ImageView, glide: RequestManager,
+                 mToolbarLayout: CollapsingToolbarLayout) {
 
             val profileAvatar = if (thread.avatar != null)
                 ImageProfileAvatar(activity, thread, mHeaderImageView, glide, mToolbarLayout)
