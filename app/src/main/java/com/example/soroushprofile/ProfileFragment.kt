@@ -39,7 +39,6 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true);
         setDarkStatusBarTo(false)
-
     }
 
     override fun onDestroy() {
@@ -86,7 +85,8 @@ class ProfileFragment : Fragment() {
         val model = ViewModelProvider(this).get(ProfileViewModel::class.java)
         arguments?.let {
             val type = ProfileFragmentArgs.fromBundle(it).conversationType
-            model.getConversationThread(type).observe(viewLifecycleOwner,
+            model.initialize(ConversationType.valueOf(type))
+            model.mConversationThread.observe(viewLifecycleOwner,
                     Observer<ConversationThread> { t -> bindConversationThread(t) })
         }
     }

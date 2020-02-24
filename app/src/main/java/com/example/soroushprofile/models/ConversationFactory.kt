@@ -31,7 +31,6 @@ object ConversationFactory {
 
             ConversationType.Group -> return GroupConversation(null, null, "Soroush", 231)
             ConversationType.Channel -> return ChannelConversation(null, "khabar 24 is live..", "Khabar24", 429)
-            else -> throw IllegalArgumentException("not supported type.")
         }
     }
 

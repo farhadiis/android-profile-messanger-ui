@@ -6,17 +6,16 @@ import androidx.lifecycle.ViewModel
 import com.example.soroushprofile.models.ConversationFactory
 import com.example.soroushprofile.models.ConversationThread
 import com.example.soroushprofile.models.ConversationType
+import java.lang.IllegalArgumentException
 
 class ProfileViewModel : ViewModel() {
 
-    private val mConversationThread: MutableLiveData<ConversationThread> by lazy {
+    val mConversationThread: MutableLiveData<ConversationThread> by lazy {
         MutableLiveData<ConversationThread>()
     }
 
-    fun getConversationThread(type: String): MutableLiveData<ConversationThread> {
-        val key = ConversationType.valueOf(type)
-        mConversationThread.value = ConversationFactory.getThread(key)
-        return mConversationThread
+    fun initialize(type: ConversationType) {
+        mConversationThread.value = ConversationFactory.getThread(type)
     }
 
 }
