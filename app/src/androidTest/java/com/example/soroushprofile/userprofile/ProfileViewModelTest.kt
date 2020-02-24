@@ -31,7 +31,6 @@ class ProfileViewModelTest {
         viewModel.initialize(type)
 
         val targetInstance = viewModel.mConversationThread.value
-        
         verify(conversationObserver).onChanged(targetInstance)
     }
 
